@@ -52,9 +52,138 @@
   <li class="task">Declaring commands via extension point</li>
   <li class="task">Declaring commands via API (why?)</li>
   <li class="task">Parametrized commands</li>
-  <li class="task">Predefined commands</li>
   <li class="task">Command icons</li>
 </ul>
+
+<h3>Predefined Commands</h3>
+
+<ul>
+  <li class="task">Reference to API for Command-IDs in case it will be available
+    in Eclipse 3.4</li>
+</ul>
+
+<p>
+  The <code>org.eclipse.ui</code> bundle comes with a set of predefined commands
+  in several categories. These commands form the basic user operations of the
+  workbench like opening views or saving editors. Most of them are probably
+  required by any custom RCP application and have already global command
+  handlers associated to them. For example the handler of the <i>Save</i>
+  command will delegate to the 
+  <a href="http://help.eclipse.org/help33/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/ui/ISaveablePart.html"><code>ISaveablePart.doSave()</code></a>
+  method of the active Editor.
+  
+  Other commands might be re-used in local contexts to implement specific
+  behavior for a common concept. For example a <i>Order Items</i> view might
+  implement a local handler for the <i>Delete</i>
+  (<code>org.eclipse.ui.edit.delete</code>) command to remove the selected item
+  from the shopping basket. Re-using existing command definitions for semantical
+  similar operations is a good coding practice as it will lead to applications
+  with consistent user experience: Whenever a particular item can be deleted
+  the according command has the same icon, the expected key binding (the
+  <code>Delete</code> key) is active and global menu entries like 
+  <i>Edit</i>&nbsp;&rarr;&nbsp;<i>Delete</i> are automatically enabled.
+</p>
+
+<p>
+  The following table list all categories and commands defined by the
+  <code>org.eclipse.ui</code> bundle along with the respective command ids. You
+  need the id strings when registering your own handlers for the commands
+  &ndash; unfortunately Eclipse does not provide Java constants here. For
+  historical reasons the id naming scheme and categorization isn't consistent in
+  all places.
+</p>
+
+<table class ="figure">
+  <tr><th>Name</th><th>ID</th></tr>
+  <tr style="background-color:#cccccc"><td><b>Category File</b></td><td><code>org.eclipse.ui.category.file</code></td></tr>
+  <tr><td>New</td><td><code>org.eclipse.ui.newWizard</code></td></tr>
+  <tr><td>Close</td><td><code>org.eclipse.ui.file.close</code></td></tr>
+  <tr><td>Close All</td><td><code>org.eclipse.ui.file.closeAll</code></td></tr>
+  <tr><td>Import</td><td><code>org.eclipse.ui.file.import</code></td></tr>
+  <tr><td>Export</td><td><code>org.eclipse.ui.file.export</code></td></tr>
+  <tr><td>Save</td><td><code>org.eclipse.ui.file.save</code></td></tr>
+  <tr><td>Save As</td><td><code>org.eclipse.ui.file.saveAs</code></td></tr>
+  <tr><td>Save All</td><td><code>org.eclipse.ui.file.saveAll</code></td></tr>
+  <tr><td>Print</td><td><code>org.eclipse.ui.file.print</code></td></tr>
+  <tr><td>Revert</td><td><code>org.eclipse.ui.file.revert</code></td></tr>
+  <tr><td>Restart</td><td><code>org.eclipse.ui.file.restartWorkbench</code></td></tr>
+  <tr><td>Refresh</td><td><code>org.eclipse.ui.file.refresh</code></td></tr>
+  <tr><td>Properties</td><td><code>org.eclipse.ui.file.properties</code></td></tr>
+  <tr><td>Exit</td><td><code>org.eclipse.ui.file.exit</code></td></tr>
+  <tr><td>Move...</td><td><code>org.eclipse.ui.edit.move</code></td></tr>
+  <tr><td>Rename</td><td><code>org.eclipse.ui.edit.rename</code></td></tr>
+  <tr><td>Close Others</td><td><code>org.eclipse.ui.file.closeOthers</code></td></tr>
+  <tr style="background-color:#cccccc"><td><b>Category Edit</b></td><td><code>org.eclipse.ui.category.edit</code></td></tr>
+  <tr><td>Undo</td><td><code>org.eclipse.ui.edit.undo</code></td></tr>
+  <tr><td>Redo</td><td><code>org.eclipse.ui.edit.redo</code></td></tr>
+  <tr><td>Cut</td><td><code>org.eclipse.ui.edit.cut</code></td></tr>
+  <tr><td>Copy</td><td><code>org.eclipse.ui.edit.copy</code></td></tr>
+  <tr><td>Paste</td><td><code>org.eclipse.ui.edit.paste</code></td></tr>
+  <tr><td>Delete</td><td><code>org.eclipse.ui.edit.delete</code></td></tr>
+  <tr><td>Content Assist</td><td><code>org.eclipse.ui.edit.text.contentAssist.proposals</code></td></tr>
+  <tr><td>Context Information</td><td><code>org.eclipse.ui.edit.text.contentAssist.contextInformation</code></td></tr>
+  <tr><td>Select All</td><td><code>org.eclipse.ui.edit.selectAll</code></td></tr>
+  <tr><td>Find and Replace</td><td><code>org.eclipse.ui.edit.findReplace</code></td></tr>
+  <tr><td>Add Bookmark</td><td><code>org.eclipse.ui.edit.addBookmark</code></td></tr>
+  <tr style="background-color:#cccccc"><td><b>Category Navigate</b></td><td><code>org.eclipse.ui.category.navigate</code></td></tr>
+  <tr><td>Go Into</td><td><code>org.eclipse.ui.navigate.goInto</code></td></tr>
+  <tr><td>Back</td><td><code>org.eclipse.ui.navigate.back</code></td></tr>
+  <tr><td>Forward</td><td><code>org.eclipse.ui.navigate.forward</code></td></tr>
+  <tr><td>Up</td><td><code>org.eclipse.ui.navigate.up</code></td></tr>
+  <tr><td>Next</td><td><code>org.eclipse.ui.navigate.next</code></td></tr>
+  <tr><td>Backward History</td><td><code>org.eclipse.ui.navigate.backwardHistory</code></td></tr>
+  <tr><td>Forward History</td><td><code>org.eclipse.ui.navigate.forwardHistory</code></td></tr>
+  <tr><td>Previous</td><td><code>org.eclipse.ui.navigate.previous</code></td></tr>
+  <tr><td>Toggle Link with Editor </td><td><code>org.eclipse.ui.navigate.linkWithEditor</code></td></tr>
+  <tr><td>Next Page</td><td><code>org.eclipse.ui.part.nextPage</code></td></tr>
+  <tr><td>Previous Page</td><td><code>org.eclipse.ui.part.previousPage</code></td></tr>
+  <tr><td>Collapse All</td><td><code>org.eclipse.ui.navigate.collapseAll</code></td></tr>
+  <tr><td>Show In</td><td><code>org.eclipse.ui.navigate.showIn</code></td></tr>
+  <tr style="background-color:#cccccc"><td><b>Category Window</b></td><td><code>org.eclipse.ui.category.window</code></td></tr>
+  <tr><td>New Window</td><td><code>org.eclipse.ui.window.newWindow</code></td></tr>
+  <tr><td>New Editor</td><td><code>org.eclipse.ui.window.newEditor</code></td></tr>
+  <tr><td>Quick Switch Editor</td><td><code>org.eclipse.ui.window.openEditorDropDown</code></td></tr>
+  <tr><td>Quick Access</td><td><code>org.eclipse.ui.window.quickAccess</code></td></tr>
+  <tr><td>Switch to Editor</td><td><code>org.eclipse.ui.window.switchToEditor</code></td></tr>
+  <tr><td>Show System Menu</td><td><code>org.eclipse.ui.window.showSystemMenu</code></td></tr>
+  <tr><td>Show View Menu</td><td><code>org.eclipse.ui.window.showViewMenu</code></td></tr>
+  <tr><td>Activate Editor</td><td><code>org.eclipse.ui.window.activateEditor</code></td></tr>
+  <tr><td>Maximize Active View or Editor</td><td><code>org.eclipse.ui.window.maximizePart</code></td></tr>
+  <tr><td>Minimize Active View or Editor</td><td><code>org.eclipse.ui.window.minimizePart</code></td></tr>
+  <tr><td>Next Editor</td><td><code>org.eclipse.ui.window.nextEditor</code></td></tr>
+  <tr><td>Previous Editor</td><td><code>org.eclipse.ui.window.previousEditor</code></td></tr>
+  <tr><td>Next View</td><td><code>org.eclipse.ui.window.nextView</code></td></tr>
+  <tr><td>Previous View</td><td><code>org.eclipse.ui.window.previousView</code></td></tr>
+  <tr><td>Next Perspective</td><td><code>org.eclipse.ui.window.nextPerspective</code></td></tr>
+  <tr><td>Previous Perspective</td><td><code>org.eclipse.ui.window.previousPerspective</code></td></tr>
+  <tr><td>Close All Perspectives</td><td><code>org.eclipse.ui.window.closeAllPerspectives</code></td></tr>
+  <tr><td>Close Perspective</td><td><code>org.eclipse.ui.window.closePerspective</code></td></tr>
+  <tr><td>Close Part</td><td><code>org.eclipse.ui.file.closePart</code></td></tr>
+  <tr><td>Customize Perspective</td><td><code>org.eclipse.ui.window.customizePerspective</code></td></tr>
+  <tr><td>Hide Editors</td><td><code>org.eclipse.ui.window.hideShowEditors</code></td></tr>
+  <tr><td>Lock the Toolbars</td><td><code>org.eclipse.ui.window.lockToolBar</code></td></tr>
+  <tr><td>Pin Editor</td><td><code>org.eclipse.ui.window.pinEditor</code></td></tr>
+  <tr><td>Preferences</td><td><code>org.eclipse.ui.window.preferences</code></td></tr>
+  <tr><td>Reset Perspective</td><td><code>org.eclipse.ui.window.resetPerspective</code></td></tr>
+  <tr><td>Save Perspective As</td><td><code>org.eclipse.ui.window.savePerspective</code></td></tr>
+  <tr><td>Show Key Assist</td><td><code>org.eclipse.ui.window.showKeyAssist</code></td></tr>
+  <tr><td>Toggle Toolbar Visibility</td><td><code>org.eclipse.ui.ToggleCoolbarAction</code></td></tr>
+  <tr style="background-color:#cccccc"><td><b>Category Help</b></td><td><code>org.eclipse.ui.category.help</code></td></tr>
+  <tr><td>Help Contents</td><td><code>org.eclipse.ui.help.helpContents</code></td></tr>
+  <tr><td>Help Search</td><td><code>org.eclipse.ui.help.helpSearch</code></td></tr>
+  <tr><td>Dynamic Help</td><td><code>org.eclipse.ui.help.dynamicHelp</code></td></tr>
+  <tr><td>Welcome</td><td><code>org.eclipse.ui.help.quickStartAction</code></td></tr>
+  <tr><td>Tips and Tricks</td><td><code>org.eclipse.ui.help.tipsAndTricksAction</code></td></tr>
+  <tr><td>About</td><td><code>org.eclipse.ui.help.aboutAction</code></td></tr>
+  <tr><td>Display Help</td><td><code>org.eclipse.ui.help.displayHelp</code></td></tr>
+  <tr style="background-color:#cccccc"><td><b>Category Views</b></td><td><code>org.eclipse.ui.category.views</code></td></tr>
+  <tr><td>Show View</td><td><code>org.eclipse.ui.views.showView</code></td></tr>
+  <tr style="background-color:#cccccc"><td><b>Category Perspectives</b></td><td><code>org.eclipse.ui.category.perspectives</code></td></tr>
+  <tr><td>Show Perspective</td><td><code>org.eclipse.ui.perspectives.showPerspective</code></td></tr>
+</table>
+<div class="caption">
+  <strong>Figure xxx</strong>: Commands defined in <code>org.eclipse.ui</code>
+</div>
 
 <h2>Menu Contributions</h2>
 
@@ -92,6 +221,8 @@
 
 <h2>Adapters for Legacy Actions [?]</h2>
 
+<h2>Using Commands in Help Contents</h2>
+
 <h2>Debugging</h2>
 
 <h2>Example Plug-ins</h2>
@@ -106,7 +237,8 @@
 <h2>Best Practices Check List</h2>
 
 <ul>
-  <li class="task">Re-use predefined commands</li>
+  <li>Before defining a new command check for semantical similar global command
+    definitions that can be re-used in the specific context.</li>
 </ul>
 
 <h2>References</h2>
