@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="com.mountainminds.eclipse.examples.CommandDump"
+         name="Command Dump"
+         point="org.eclipse.core.runtime.applications">
+      <application
+            cardinality="singleton-global"
+            thread="any"
+            visible="true">
+         <run
+               class="com.mountainminds.eclipse.examples.commanddump.CommandDumper">
+         </run>
+      </application>
+   </extension>
+
+</plugin>
