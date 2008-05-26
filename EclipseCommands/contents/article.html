@@ -49,11 +49,52 @@
 
 <ul>
   <li class="task">Purpose and properties</li>
-  <li class="task">Declaring commands via extension point</li>
   <li class="task">Declaring commands via API (why?)</li>
+  <li class="task">APIs Querying Commands</li>
   <li class="task">Parametrized commands</li>
   <li class="task">Command icons</li>
 </ul>
+
+<h3>Declaring Commands</h3>
+
+<p>
+  Due to the abstract concept of commands they are typically declared globally
+  via extension definitions in <code>plugin.xml</code> files. Therefore most
+  commands are available for the entire life cycle of the workbench in all
+  contexts. The corresponding extension point 
+  <code>org.eclipse.ui.commands</code> allows to declare commands and group
+  them into categories:
+</p>
+
+<pre>
+  &lt;extension point="org.eclipse.ui.commands"&gt;
+     &lt;category name="User Sessions"
+               description="Management of user sessions"
+               id="com.mountainminds.eclipse.examples.sessions" /&gt;
+     &lt;command <b>name</b>="Login"
+              <b>description</b>="Login a new user"
+              <b>id</b>="com.mountainminds.eclipse.examples.login"
+              <b>categoryId</b>="com.mountainminds.eclipse.examples.sessions" /&gt;
+     &lt;command name="Logout"
+              description="Logout the current user"
+              id="com.mountainminds.eclipse.examples.logout"
+              categoryId="com.mountainminds.eclipse.examples.sessions" /&gt;
+  &lt;/extension&gt;
+</pre>
+
+<p>
+  As you can see a command definition consists of a name and description, a 
+  unique identifier and an optional category. There is no reference to an
+  specific implementation and no reference to menu items or key bindings for
+  the command. See <span class="task">[link to online doc]</span> for a complete
+  reference of the optional attributes of this extension point.
+</p>
+
+<p>
+  Before creating your own command always double-check whether one of the
+  existing commands already provides the required semantic. You'll find a
+  full list of the command predefined by the Eclipse UI in the next section. 
+</p>
 
 <h3>Predefined Commands</h3>
 
@@ -70,7 +111,7 @@
   handlers associated to them. For example the handler of the <i>Save</i>
   command will delegate to the 
   <a href="http://help.eclipse.org/help33/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/ui/ISaveablePart.html"><code>ISaveablePart.doSave()</code></a>
-  method of the active Editor.
+  method of the active editor.
   
   Other commands might be re-used in local contexts to implement specific
   behavior for a common concept. For example a <i>Order Items</i> view might
@@ -213,6 +254,32 @@
 
 <h2>Expressions</h2>
 
+<ul>
+  <li class="task">Complete Reference Where Expressions are used in RCP Extension points.</li>
+  <li class="task">Examples for Common Tasks</li>
+</ul>
+
+<ul>
+  <li><b><code>org.eclipse.core.expressions.definitions</code>:</b> </li>
+  <li><b><code>org.eclipse.debug.ui.detailPaneFactories</code>:</b> </li>
+  <li><b><code>org.eclipse.debug.ui.launchShortcuts</code>:</b> </li>
+  <li><b><code>org.eclipse.debug.ui.memoryRenderings</code>:</b> </li>
+  <li><b><code>org.eclipse.ltk.*</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.actionSets</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.activities</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.console.consolePageParticipants</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.console.consolePatternMatchListeners</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.decorators</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.editorActions</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.handlers</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.menus</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.navigator.linkHelper</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.navigator.navigatorContent</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.popupMenus</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.propertyPages</code>:</b> </li>
+  <li><b><code>org.eclipse.ui.viewActions</code>:</b> </li>
+</ul>
+
 <h2>Sources</h2>
 
 <ul>
@@ -221,11 +288,17 @@
 
 <h2>Contexts</h2>
 
-<h2>Adapters for Legacy Actions [?]</h2>
-
 <h2>Using Commands in Help Contents</h2>
 
 <h2>Debugging</h2>
+
+<h2>Migrating old Code to the Command Framework</h2>
+
+<ul>
+  <li class="task">Adapters for Legacy Actions</li>
+  <li class="task">Migrating to the ui.menues extension point</li>
+</ul>
+
 
 <h2>Example Plug-ins</h2>
 
@@ -233,7 +306,8 @@
   <li class="task">Sample plug-ins demonstrating different kind of contribution
   scenarios, check <code>org.eclipse.ui.examples.contributions</code></li>
   <li class="task">Generic command browser plug-in to explore and debug an
-  existing RCP application</li>
+  existing RCP application, Browser: Workbench, Window, Page, View for Service
+  Location</li>
 </ul>
 
 <h2>Best Practices Check List</h2>
