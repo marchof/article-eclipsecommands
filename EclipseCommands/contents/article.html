@@ -17,7 +17,14 @@
 <h1>The Eclipse RCP Command Framework</h1>
 <div class="summary">
 <h2>Summary</h2>
-  <p><span class="task">Summary, target audience, target version (Eclipse 3.4)</span></p>
+  <p>
+    <span class="task">Summary, target version (Eclipse 3.4)</span>
+    
+    This comprehensive article is targeted towards new Eclipse RCP developers as
+    well as <i>"pre 3.3 Eclipse developers"</i> who want to catch up with new RCP
+    patterns. Due to the included references and examples it may also serve as a 
+    companion for day-to-day development tasks.
+  </p>
 <div class="author">Draft by Marc R. Hoffmann, Mountainminds GmbH &amp; Co. KG</div>
 <div class="copyright">Copyright &copy; 2008 Mountainminds GmbH &amp; Co. KG</div>
 <div class="date">DRAFT - April, 2008</div>
@@ -62,7 +69,7 @@
   via extension definitions in <code>plugin.xml</code> files. Therefore most
   commands are available for the entire life cycle of the workbench in all
   contexts. The corresponding extension point 
-  <code>org.eclipse.ui.commands</code> allows to declare commands and group
+  <code>org.eclipse.ui.commands</code> allows declaring commands and group
   them into categories:
 </p>
 
@@ -117,11 +124,11 @@
   behavior for a common concept. For example a <i>Order Items</i> view might
   implement a local handler for the <i>Delete</i>
   (<code>org.eclipse.ui.edit.delete</code>) command to remove the selected item
-  from the shopping basket. Re-using existing command definitions for semantical
-  similar operations is a good coding practice as it will lead to applications
-  with consistent user experience: Whenever a particular item can be deleted
-  the according command has the same icon, the expected key binding (the
-  <code>Delete</code> key) is active and global menu entries like 
+  from the shopping basket. Re-using existing command definitions for
+  semantically similar operations is a good coding practice as it will lead to
+  applications with consistent user experience: Whenever a particular item can
+  be deleted the according command has the same icon, the expected key binding
+  (the <code>Delete</code> key) is active and global menu entries like 
   <i>Edit</i>&nbsp;&rarr;&nbsp;<i>Delete</i> are automatically enabled.
 </p>
 
@@ -280,6 +287,20 @@
   <li><b><code>org.eclipse.ui.viewActions</code>:</b> </li>
 </ul>
 
+<h4>Example: One ore more elements selected</h4>
+
+<pre>
+  &lt;with variable="selection"&gt;
+    &lt;count value="+"/&gt;
+  &lt;/with&gt;
+</pre>
+
+<h4>Example: Only Elements selected that adapt to IResource</h4>
+
+
+<h4>Example: Exactly one element selected that adapts to IResource</h4>
+
+
 <h2>Sources</h2>
 
 <ul>
@@ -313,8 +334,14 @@
 <h2>Best Practices Check List</h2>
 
 <ul>
-  <li>Before defining a new command check for semantical similar global command
-    definitions that can be re-used in the specific context.</li>
+  <li>Before defining a new command check for semantically similar global
+    command definitions that can be re-used in the specific context.</li>
+  <li>Consider using a parameterized command instead of multiple different
+    commands in case these commands just describe variations of the same
+    behaviour.</li>
+  <li>Always register the viewers within your workbench parts (views and
+    editors) as selection provider to make the command framework aware of the
+    current selection.</li>
 </ul>
 
 <h2>References</h2>
@@ -333,6 +360,14 @@
   <li>Tonny Madsen (2007). Working with the menus extension point. <i>blog.rcp-company.com</i><br/>
     <a href="http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html">http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html</a></li>
 </ul>
+
+<h2>Feedback</h2>
+
+<p>
+  Please use bug entry
+  <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=223445">223445</a> to
+  report any issues with this article .
+</p>
 
 </div>
 </body>
