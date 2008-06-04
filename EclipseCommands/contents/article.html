@@ -34,7 +34,7 @@
 
 <ul>
   <li class="task">Introduction</li>
-  <li class="task">History</li>
+  <li class="task">History, reasons for moving to a new architecture</li>
   <li class="task">Outline: As this will be a lengthy article provide a short
     overview how this article is organized with anchor links to its sections.</li>
 </ul>
@@ -237,10 +237,20 @@
 
 <ul>
   <li class="task">Sample Workbench screen with all possible positions for contributions</li>
+  <li class="task">Example 1: "Hello World" command placed at all possible
+    locations (base for screenshot above).</li>
   <li class="task">ui.menus extension point</li>
   <li class="task">Addressing scheme</li>
-  <li class="task">Dynamic contributions</li>
+  <li class="task">Reference of all well known menu ids</li>
+  <li class="task">Dynamic contributions, examples: history, customazible 
+    favourites, domain specific items (e.g. related Java types, calendar dates).</li>
   <li class="task">Writing extensible plugins</li>
+  <li class="task">In case you're project is an add-on to another product (e.g.
+    the Eclipse IDE) try to be un-obtrusive and avoid prominent placement of
+    menu items. If users installes several add-ons they would flood their
+    workbench windows. Instead try to find appropriate locations where similar
+    functionality can already be found and everybody will expect it.
+    [TODO: Put on best practices list]</li>
   <li class="task">Eclipse Help Issue: "org.eclipse.ui.any.popup" must read
     "org.eclipse.ui.<b>popup.any</b>"</li>
 </ul>
@@ -309,8 +319,6 @@
 
 <h2>Contexts</h2>
 
-<h2>Using Commands in Help Contents</h2>
-
 <h2>Debugging</h2>
 
 <h2>Migrating old Code to the Command Framework</h2>
@@ -318,6 +326,13 @@
 <ul>
   <li class="task">Adapters for Legacy Actions</li>
   <li class="task">Migrating to the ui.menues extension point</li>
+</ul>
+
+<h2>More Topics</h2>
+
+<ul>
+  <li class="task">Using Commands in Help Contents</li>
+  <li class="task">Stateful contribution items (toggle, check, radio)</li>
 </ul>
 
 
@@ -366,7 +381,7 @@
 <p>
   Please use bug entry
   <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=223445">223445</a> to
-  report any issues with this article .
+  report any issues with this article.
 </p>
 
 </div>
