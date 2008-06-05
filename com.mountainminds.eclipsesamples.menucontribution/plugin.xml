@@ -122,6 +122,14 @@
          </command>
       </menuContribution>
       <menuContribution
+            locationURI="menu:org.eclipse.ui.views.ResourceNavigator?after=additions">
+         <command
+               commandId="com.mountainminds.eclipsesamples.helloWorld"
+               icon="icons/elcl16/hello.gif"
+               style="push">
+         </command>
+      </menuContribution>
+      <menuContribution
             locationURI="popup:org.eclipse.ui.views.ResourceNavigator?after=additions">
          <command
                commandId="com.mountainminds.eclipsesamples.helloWorld"
