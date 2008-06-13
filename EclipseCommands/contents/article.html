@@ -17,17 +17,28 @@
 <h1>The Eclipse RCP Command Framework</h1>
 <div class="summary">
 <h2>Summary</h2>
+  <p>From beginning on the Eclipse platform was designed for extensibility.
+    Therefore nearly every aspect of the workbench's user interface has a
+    corresponding contribution mechanism. While the Eclipse workbench has
+    evolved from a pure IDE to <i>the RCP platform</i> a big zoo of of extension
+    APIs was created for plug-in provider to facilitate the growing user
+    interface capabilities. Eclipse 3.3 introduced a new and consolidated
+    framework for user interaction with the Eclipse workbench which obsoletes
+    several former extension points and APIs. The glue within this framework are
+    so called <i>commands</i>. This comprehensive article is targeted towards
+    new Eclipse RCP developers as well as "pre 3.3 Eclipse developers" who want
+    to catch up with new RCP patterns. Due to the included references and
+    examples it may also serve as a companion for day-to-day development tasks.
+  </p>
   <p>
-    <span class="task">Summary, target version (Eclipse 3.4)</span>
-    
-    This comprehensive article is targeted towards new Eclipse RCP developers as
-    well as <i>"pre 3.3 Eclipse developers"</i> who want to catch up with new RCP
-    patterns. Due to the included references and examples it may also serve as a 
-    companion for day-to-day development tasks.
+    This article is applies to the
+    <a href="http://www.eclipse.org/projects/project_summary.php?projectid=eclipse">Eclipse Project</a>,
+    release 3.4. For corrections and other issues with this article please use bugzilla entry
+    <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=223445">#223445</a>.
   </p>
 <div class="author">Draft by Marc R. Hoffmann, Mountainminds GmbH &amp; Co. KG</div>
 <div class="copyright">Copyright &copy; 2008 Mountainminds GmbH &amp; Co. KG</div>
-<div class="date">DRAFT - April, 2008</div>
+<div class="date">DRAFT - June, 2008</div>
 </div>
 
 <div class="content">
@@ -38,6 +49,18 @@
   <li class="task">Outline: As this will be a lengthy article provide a short
     overview how this article is organized with anchor links to its sections.</li>
 </ul>
+
+
+ IAction combines visual representation, handler and key bindings
+ 
+ Use cases:
+ 
+ - Place the same Action at different places e.g. Window Menu and Toolbar
+ - Have a different implementation for e.g. the "Copy" Command from the
+ "Edit" menu depending on the current context
+ - Have different and customizable key bindings
+
+ Solution: Decouple UI-Binding and implementation through so called Commands.
 
 
 <h2>The Big Picture</h2>
@@ -105,11 +128,6 @@
 
 <h3>Predefined Commands</h3>
 
-<ul>
-  <li class="task">Reference to API for Command-IDs in case it will be available
-    in Eclipse 3.4</li>
-</ul>
-
 <p>
   The <code>org.eclipse.ui</code> bundle comes with a set of predefined commands
   in several categories. These commands form the basic user operations of the
@@ -134,9 +152,7 @@
 
 <p>
   The following table list all categories and commands defined by the
-  <code>org.eclipse.ui</code> bundle along with the respective command ids. You
-  need the id strings when registering your own handlers for the commands
-  &ndash; unfortunately Eclipse does not provide Java constants here. For
+  <code>org.eclipse.ui</code> bundle along with the respective command ids. For
   historical reasons the id naming scheme and categorization isn't consistent in
   all places.
 </p>
@@ -233,6 +249,17 @@
   <strong>Figure xxx</strong>: Commands defined in plug-in <code>org.eclipse.ui</code>
 </div>
 
+<p>
+  
+  Adding menu items for these commands within your custom views
+  Register local handlers for these commands
+  Programmatically invoke these commands to tigger existing handlers  
+You
+  need the id strings when registering your own handlers for the commands
+  &ndash; unfortunately Eclipse does not provide Java constants here. 
+
+</p>
+
 <h2>Menu Contributions</h2>
 
 <ul>
@@ -243,11 +270,14 @@
   <li class="task">Reference of all well known menu ids</li>
   <li class="task">Dynamic contributions, examples: history, customazible 
     favourites, domain specific items (e.g. related Java types, calendar dates).</li>
+  <li class="task">Creating custom controls in toolbars.</li>
   <li class="task">Writing extensible plugins</li>
   <li class="task">In case you're project is an add-on to another product (e.g.
     the Eclipse IDE) try to be un-obtrusive and avoid prominent placement of
     menu items. If users installes several add-ons they would flood their
-    workbench windows. Instead try to find appropriate locations where similar
+    workbench windows. Especially Command1, Command2 are most likely unapropriate
+    places for add-in programs.  
+    Instead try to find appropriate locations where similar
     functionality can already be found and everybody will expect it.
     [TODO: Put on best practices list]</li>
   <li class="task">Eclipse Help Issue: "org.eclipse.ui.any.popup" must read
@@ -367,6 +397,8 @@
 <h2>References</h2>
 
 <ul>
+  <li>Douglas Pollock (2005). Improve Action Contributions <i>Request for Comments at dev.eclipse.org</i><br/>
+    <a href="http://dev.eclipse.org/viewcvs/index.cgi/platform-ui-home/R3_1/contributions-proposal/requestForComments.html?revision=1.3">http://dev.eclipse.org/viewcvs/index.cgi/platform-ui-home/R3_1/contributions-proposal/requestForComments.html?revision=1.3</a></li>
   <li>Paul Webster et al (2007). Platform Command Framwork. <i>wiki.eclipse.org</i><br/> 
     <a href="http://wiki.eclipse.org/Platform_Command_Framework">http://wiki.eclipse.org/Platform_Command_Framework</a></li>
   <li>Paul Webster et al (2008). Command Core Expressions. <i>wiki.eclipse.org</i><br/> 
