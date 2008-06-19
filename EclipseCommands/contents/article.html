@@ -1,12 +1,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
-<title>The Eclipse Command Framework</title>
+<title>The Eclipse RCP Command Framework</title>
 <meta http-equiv="Content-Type"
 	content="text/html; charset=windows-1252"/>
 <link href="../article.css" type="text/css" rel="stylesheet"/>
+<link href="../code.css" type="text/css" rel="stylesheet"/>
 <style type="text/css">
-/* temporarly markes for editing */
+/* temporarily marker for editing */
 .task {
   background-color: #ffff80;
 }
@@ -24,14 +25,15 @@
     APIs was created for plug-in provider to facilitate the growing user
     interface capabilities. Eclipse 3.3 introduced a new and consolidated
     framework for user interaction with the Eclipse workbench which obsoletes
-    several former extension points and APIs. The glue within this framework are
-    so called <i>commands</i>. This comprehensive article is targeted towards
-    new Eclipse RCP developers as well as "pre 3.3 Eclipse developers" who want
-    to catch up with new RCP patterns. Due to the included references and
-    examples it may also serve as a companion for day-to-day development tasks.
+    several former extension points and interfaces. The glue within this
+    framework are so called <i>commands</i>. This comprehensive article is
+    targeted towards new Eclipse RCP developers as well as "pre 3.3 Eclipse
+    developers" who want to catch up with new RCP patterns. Due to the included
+    references and examples it may also serve as a companion for day-to-day
+    development tasks.
   </p>
   <p>
-    This article is applies to the
+    This article applies to the
     <a href="http://www.eclipse.org/projects/project_summary.php?projectid=eclipse">Eclipse Project</a>,
     release 3.4. For corrections and other issues with this article please use bugzilla entry
     <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=223445">#223445</a>.
@@ -43,27 +45,114 @@
 
 <div class="content">
 
+<h2>Contents</h2>
+
 <ul>
-  <li class="task">Introduction</li>
-  <li class="task">History, reasons for moving to a new architecture</li>
-  <li class="task">Outline: As this will be a lengthy article provide a short
-    overview how this article is organized with anchor links to its sections.</li>
+  <li class="task">TODO</li>
+</ul>
+
+<h2>Introduction</h2>
+
+<p>
+  The Eclipse command framework is the result of long-term effort to streamline
+  the way how user interaction is contributed to the Eclipse workbench. While
+  Eclipse RCP has outgrown the extensible IDE towards a universal platform for
+  all kind of technical and business applications more and more UI capabilities
+  came into picture. The original APIs for facilitating all these capabilities
+  became cumbersome and bloated.
+</p>
+
+<h3>The Original Action Contribution Design</h3>
+
+<p>  
+  To understand the reasons for introducing a new framework we will take a quick
+  tour through the original contribution mechanisms. A good example for lack of
+  required flexibility is JFace's
+  <code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/jface/action/IAction.html">IAction</a></code>
+  interface, which abstracts a particular user action from specific widgets like
+  menu items and tool bar buttons: 
+</p>
+
+<pre class="java">
+  <span class="keyword">interface</span> IAction {
+  
+    <span class="keyword">void</span> setText(String text);
+    <span class="keyword">void</span> setImageDescriptor(ImageDescriptor image);
+    <span class="keyword">void</span> setAccelerator(<span class="keyword">int</span> keycode);
+    <span class="keyword">void</span> setEnabled(<span class="keyword">boolean</span> enabled);
+    <span class="keyword">void</span> run();
+    
+    <span class="comment">// ... more setters and getters</span>
+  }
+</pre> 
+ 
+<p>
+  Note what aspects are tightly coupled by this type definition: The textual
+  label and menu icon, an keyboard accelerator, the enabled state as well as a
+  particular implementation of the action which is directly included in the
+  <code>run()</code> method. So what if you have different implementations of
+  for the same user action depending on the context or even want to allow
+  plug-in providers to supply their own specific implementations? What if you
+  need to maintain several customizable keyboard accelerator schemes? How can
+  the action's enablement dynamically get computed from some properties of the
+  selected elements?  
+</p>
+
+<p>
+  The extension points of the Eclipse workbench UI separate visual aspects from
+  the actual action implementation. While icons and labels are declared in the
+  extension attributes the actual execution is delegated to
+  <code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/ui/IActionDelegate.html">IActionDelegate</a></code>
+  implementations. Depending on the placement and activation context different extension
+  points must be used:
+</p>
+
+<ul>
+  <li>
+    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_actionSets.html">org.eclipse.ui.actionSets</a></code>:</b>
+    Action sets are contributions to the main menu and tool bar. Some
+    abstraction from the implementation is possible by declaring a contributed
+    action as <i>retargetable</i>. In this case parts can register local handlers 
+    via API.
+  </li><li>
+    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_editorActions.html">org.eclipse.ui.editorActions</a></code>:</b>
+    This extension point also allows contributions to the main menu and tool
+    bar which are bound to a particular editor type. 
+  </li><li>
+    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_actionSetPartAssociations.html">org.eclipse.ui.actionSetPartAssociations</a></code>:</b>
+    While the former extension point allows editor specific contributions to
+    the main menu and tool bar this one provides a similar functionality for
+    all parts including views: It controls the visibility of action sets
+    depending whether a particular editor or part is active within the workbench
+    window. 
+  </li><li>
+    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_viewActions.html">org.eclipse.ui.viewActions</a></code>:</b>
+    Each view may have a local tool bar and pull-down menu. This is the
+    extension point to populate them for particular view types.  
+  </li><li>
+    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_popupMenus.html">org.eclipse.ui.popupMenus</a></code>:</b>
+    For additions to context menus, either for specific views
+    (<code>viewerContribution</code>) or for particular objects wherever they
+    appear in the views (<code>objectContribution</code>).</li>
+</ul>
+
+<p>
+  Other workbench locations like the status line have not been open at all for
+  contributions through extension points.
+</p>
+
+<h3>Moving to a new Architecture</h3>
+
+<ul>
+  <li class="task">RFC published in 2005</li>
+  <li class="task">While the command framework is a clean and powerful solution
+    to the issues stated above it came into picture quite late and is also by
+    the Eclipse project itself not yet fully adopted.</li>
 </ul>
 
 
- IAction combines visual representation, handler and key bindings
- 
- Use cases:
- 
- - Place the same Action at different places e.g. Window Menu and Toolbar
- - Have a different implementation for e.g. the "Copy" Command from the
- "Edit" menu depending on the current context
- - Have different and customizable key bindings
 
- Solution: Decouple UI-Binding and implementation through so called Commands.
-
-
-<h2>The Big Picture</h2>
+<h3>The Command Framework</h3>
 
 <ul>
   <li class="task">Highlevel overview defining the core terms along with there
@@ -73,6 +162,16 @@
     version of the same chart could depict the focus of the respective section.</li>
   <li class="task">Involved Services</li>
 </ul>
+
+<p class="task"> 
+ Use cases:
+ 
+ - Place the same Action at different places e.g. Window Menu and Toolbar
+ - Have a different implementation for e.g. the "Copy" Command from the
+ "Edit" menu depending on the current context
+
+ Solution: Decouple UI-Binding and implementation through so called Commands.
+</p>
 
 
 <h2>Commands</h2>
@@ -96,19 +195,19 @@
   them into categories:
 </p>
 
-<pre>
-  &lt;extension point="org.eclipse.ui.commands"&gt;
-     &lt;category name="User Sessions"
-               description="Management of user sessions"
-               id="com.mountainminds.eclipse.examples.sessions" /&gt;
-     &lt;command <b>name</b>="Login"
-              <b>description</b>="Login a new user"
-              <b>id</b>="com.mountainminds.eclipse.examples.login"
-              <b>categoryId</b>="com.mountainminds.eclipse.examples.sessions" /&gt;
-     &lt;command name="Logout"
-              description="Logout the current user"
-              id="com.mountainminds.eclipse.examples.logout"
-              categoryId="com.mountainminds.eclipse.examples.sessions" /&gt;
+<pre class="markup">
+  &lt;extension point=<span class="const">"org.eclipse.ui.commands"</span>&gt;
+     &lt;category name=<span class="const">"User Sessions"</span>
+               description=<span class="const">"Management of user sessions"</span>
+               id=<span class="const">"com.mountainminds.eclipse.examples.sessions"</span> /&gt;
+     &lt;command name=<span class="const">"Login"</span>
+              description=<span class="const">"Login a new user"</span>
+              id=<span class="const">"com.mountainminds.eclipse.examples.login"</span>
+              categoryId=<span class="const">"com.mountainminds.eclipse.examples.sessions"</span> /&gt;
+     &lt;command name=<span class="const">"Logout"</span>
+              description=<span class="const">"Logout the current user"</span>
+              id=<span class="const">"com.mountainminds.eclipse.examples.logout"</span>
+              categoryId=<span class="const">"com.mountainminds.eclipse.examples.sessions"</span> /&gt;
   &lt;/extension&gt;
 </pre>
 
@@ -154,7 +253,8 @@
   The following table list all categories and commands defined by the
   <code>org.eclipse.ui</code> bundle along with the respective command ids. For
   historical reasons the id naming scheme and categorization isn't consistent in
-  all places.
+  all places. Unfortunately there are no Java constants for the command ids in
+  Eclipse 3.4 (<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=54581">Issue #54581</a>). 
 </p>
 
 <table class="figure">
@@ -249,16 +349,6 @@
   <strong>Figure xxx</strong>: Commands defined in plug-in <code>org.eclipse.ui</code>
 </div>
 
-<p>
-  
-  Adding menu items for these commands within your custom views
-  Register local handlers for these commands
-  Programmatically invoke these commands to tigger existing handlers  
-You
-  need the id strings when registering your own handlers for the commands
-  &ndash; unfortunately Eclipse does not provide Java constants here. 
-
-</p>
 
 <h2>Menu Contributions</h2>
 
@@ -268,6 +358,7 @@ You
   <li class="task">ui.menus extension point</li>
   <li class="task">Addressing scheme</li>
   <li class="task">Reference of all well known menu ids</li>
+  <li class="task">Stateful items (toggle, check, radio)</li>
   <li class="task">Dynamic contributions, examples: history, customazible 
     favourites, domain specific items (e.g. related Java types, calendar dates).</li>
   <li class="task">Creating custom controls in toolbars.</li>
@@ -283,6 +374,8 @@ You
   <li class="task">Eclipse Help Issue: "org.eclipse.ui.any.popup" must read
     "org.eclipse.ui.<b>popup.any</b>"</li>
 </ul>
+
+
 
 <img src="images/menucontributions.png" alt="Menu Contributions" width="623" height="512" class="figure"/>
 <div class="caption">
@@ -367,6 +460,7 @@ You
 
 <ul>
   <li class="task">Using Commands in Help Contents</li>
+  <li class="task">Commands for non-UI applications</li>
   <li class="task">Stateful contribution items (toggle, check, radio)</li>
 </ul>
 
@@ -384,6 +478,10 @@ You
 <h2>Best Practices Check List</h2>
 
 <ul>
+  <li>Use the new extension point <code>org.eclipse.ui.menu</code> in favour of
+    the former <code>org.eclipse.ui.editorActions</code>, 
+    <code>org.eclipse.ui.viewActions</code> and
+    <code>org.eclipse.ui.popupMenus</code>.</li>  
   <li>Before defining a new command check for semantically similar global
     command definitions that can be re-used in the specific context.</li>
   <li>Consider using a parameterized command instead of multiple different

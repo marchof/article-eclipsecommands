@@ -1,0 +1,22 @@
+.java {
+  font-family: Courier New,Courier,monospace;
+}
+
+.java .keyword {
+  color: #7f0055;
+  font-weight:bold;
+}
+
+.java .comment {
+  color: #3f7f5f;
+}
+
+
+.markup {
+  font-family: Courier New,Courier,monospace;
+  color: #000080;
+}
+
+.markup .const {
+  color: #008000;
+}
