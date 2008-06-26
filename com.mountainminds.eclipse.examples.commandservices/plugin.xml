@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            class="com.mountainminds.eclipse.examples.commandservices.CommandDefiningView"
+            id="com.mountainminds.eclipse.examples.commandDefiningView"
+            name="Command Defining View"
+            restorable="true">
+      </view>
+   </extension>
+
+</plugin>
