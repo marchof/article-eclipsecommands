@@ -194,8 +194,8 @@
   via extension definitions in <code>plugin.xml</code> files. Therefore most
   commands are available for the entire life cycle of the workbench in all
   contexts. The corresponding extension point 
-  <code>org.eclipse.ui.commands</code> allows declaring commands and group
-  them into categories:
+  <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_commands.html">org.eclipse.ui.commands</a></code>
+  allows declaring commands and group them into categories:
 </p>
 
 <pre class="markup">
@@ -218,17 +218,39 @@
   As you can see a command definition consists of a name and description, a 
   unique identifier and an optional category. There is no reference to an
   specific implementation and no reference to menu items or key bindings for
-  the command. See <span class="task">[link to online doc]</span> for a complete
-  reference of the optional attributes of this extension point.
+  the command. See the online documentation for a complete reference of the
+  optional attributes of the extension point 
+  <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_commands.html">org.eclipse.ui.commands</a></code>.
 </p>
 
 <p>
   Before creating your own command always double-check whether one of the
   existing commands already provides the required semantic. You'll find a
-  full list of the command predefined by the Eclipse UI in the next section. 
+  full list of the command predefined by the <code>org.eclipse.ui</code> bundle
+  <a href="#commands_predefined">below</a>. 
 </p>
 
-<h3>Predefined Commands</h3>
+<h3>Defining Commands at Runtime</h3>
+
+
+<pre class="java">
+  <span class="comment">// Retrieve the Command Service</span>
+  ICommandService cs = (ICommandService) workbench.getService(ICommandService.<span class="keyword">class</span>);
+
+  <span class="comment">// Define Our Category</span>
+  Category category = cs.getCategory(<span class="string">"com.mountainminds.eclipse.examples.sessions"</span>);
+  category.define(<span class="string">"User Sessions"</span>, <span class="string">"Management of user sessions"</span>);
+
+  <span class="comment">// Define Login Command</span>
+  Command login = cs.getCommand(<span class="string">"com.mountainminds.eclipse.examples.login"</span>);
+  login.define(<span class="string">"Login"</span>, <span class="string">"Login a new user"</span>, category);
+
+  <span class="comment">// Define Logout Command</span>
+  Command logout = cs.getCommand(<span class="string">"com.mountainminds.eclipse.examples.logout"</span>);
+  logout.define(<span class="string">"Logout"</span>, <span class="string">"Logout the current user"</span>, category);
+</pre>
+
+<h3><a name="commands_predefined"/>Predefined Commands</h3>
 
 <p>
   The <code>org.eclipse.ui</code> bundle comes with a set of predefined commands
