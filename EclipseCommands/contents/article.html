@@ -68,7 +68,7 @@
   To understand the reasons for introducing a new framework we will take a quick
   tour through the original contribution mechanisms. A good example for lack of
   required flexibility is JFace's
-  <code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/jface/action/IAction.html">IAction</a></code>
+  <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/jface/action/IAction.html">IAction</a></code>
   interface, which abstracts a particular user action from specific widgets like
   menu items and tool bar buttons: 
 </p>
@@ -102,44 +102,47 @@
   The extension points of the Eclipse workbench UI separate visual aspects from
   the actual action implementation. While icons and labels are declared in the
   extension attributes the actual execution is delegated to
-  <code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/ui/IActionDelegate.html">IActionDelegate</a></code>
+  <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/ui/IActionDelegate.html">IActionDelegate</a></code>
   implementations. Depending on the placement and activation context different extension
   points must be used:
 </p>
 
 <ul>
   <li>
-    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_actionSets.html">org.eclipse.ui.actionSets</a></code>:</b>
+    <b><code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_actionSets.html">org.eclipse.ui.actionSets</a></code>:</b>
     Action sets are contributions to the main menu and tool bar. Some
     abstraction from the implementation is possible by declaring a contributed
     action as <i>retargetable</i>. In this case parts can register local handlers 
     via API.
   </li><li>
-    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_editorActions.html">org.eclipse.ui.editorActions</a></code>:</b>
+    <b><code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_editorActions.html">org.eclipse.ui.editorActions</a></code>:</b>
     This extension point also allows contributions to the main menu and tool
     bar which are bound to a particular editor type. 
   </li><li>
-    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_actionSetPartAssociations.html">org.eclipse.ui.actionSetPartAssociations</a></code>:</b>
+    <b><code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_actionSetPartAssociations.html">org.eclipse.ui.actionSetPartAssociations</a></code>:</b>
     While the former extension point allows editor specific contributions to
     the main menu and tool bar this one provides a similar functionality for
     all parts including views: It controls the visibility of action sets
     depending whether a particular editor or part is active within the workbench
     window. 
   </li><li>
-    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_viewActions.html">org.eclipse.ui.viewActions</a></code>:</b>
+    <b><code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_viewActions.html">org.eclipse.ui.viewActions</a></code>:</b>
     Each view may have a local tool bar and pull-down menu. This is the
     extension point to populate them for particular view types.  
   </li><li>
-    <b><code><a href="http://help.eclipse.org/stable/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_popupMenus.html">org.eclipse.ui.popupMenus</a></code>:</b>
+    <b><code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_popupMenus.html">org.eclipse.ui.popupMenus</a></code>:</b>
     For additions to context menus, either for specific views
     (<code>viewerContribution</code>) or for particular objects wherever they
     appear in the views (<code>objectContribution</code>).</li>
 </ul>
 
 <p>
-  Other workbench locations like the status line have not been open at all for
-  contributions through extension points.
+  Placing menu items or tool bar buttons requires the plug-in developer to pick
+  the right extension points out of this list. On the other hand workbench
+  locations like the status line can not be populated open at all with these
+  extension points.
 </p>
+
 
 <h3>Moving to a new Architecture</h3>
 
