@@ -230,12 +230,23 @@
   <a href="#commands_predefined">below</a>. 
 </p>
 
-<h3>Defining Commands at Runtime</h3>
+<h3>Defining Commands at Programmatically</h3>
 
+<p>
+  In special situations you might also use the command service API to define
+  commands programmatically. This can be useful if you retrieve the definitions
+  from some other source than Eclipse' declarative XML based extensions. Due to
+  the abstract nature of commands they typically exist for the entire life time
+  of the contributing bundle and will not change dynamically. Therefore the 
+  <code>plugin.xml</code> based declaration described above is the typical 
+  approach for Eclipse applications. Anyway, here is an example how the
+  <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/runtime/commands/ICommandService.html">ICommandService</a></code>
+  can be used to declare our sample category and commands.
+</p>
 
 <pre class="java">
   <span class="comment">// Retrieve the Command Service</span>
-  ICommandService cs = (ICommandService) workbench.getService(ICommandService.<span class="keyword">class</span>);
+  ICommandService cs = (ICommandService) serviceLocator.getService(ICommandService.<span class="keyword">class</span>);
 
   <span class="comment">// Define Our Category</span>
   Category category = cs.getCategory(<span class="string">"com.mountainminds.eclipse.examples.sessions"</span>);
@@ -249,6 +260,23 @@
   Command logout = cs.getCommand(<span class="string">"com.mountainminds.eclipse.examples.logout"</span>);
   logout.define(<span class="string">"Logout"</span>, <span class="string">"Logout the current user"</span>, category);
 </pre>
+
+<p>
+  See the <a href="#services">section about services</a> below to learn where
+  you can retrieve a  
+  <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/api/org/eclipse/runtime/commands/ICommandService.html">ICommandService</a></code>
+  instance. As command definitions are declared globally, plug-ins that register
+  commands programatically are also responsible for cleaning them up at the end
+  of their live cycle. So let's behave like a good Eclipse citizen and undefine
+  our examples again:  
+</p>
+
+<pre class="java">
+  cs.getCommand(<span class="string">"com.mountainminds.eclipse.examples.login"</span>).undefine();
+  cs.getCommand(<span class="string">"com.mountainminds.eclipse.examples.logout"</span>).undefine();
+  cs.getCategory(<span class="string">"com.mountainminds.eclipse.examples.sessions"</span>).undefine();
+</pre>
+
 
 <h3><a name="commands_predefined"/>Predefined Commands</h3>
 
@@ -469,6 +497,16 @@
 <ul>
   <li class="task">Custom sources</li>
 </ul>
+
+<h2><a name="services"/>Services</h2>
+
+<ul>
+  <li class="task">List of involved services</li>
+  <li class="task">Where to find <code>IServiceLocator</code>s in the workbench</li>
+  <li class="task">Service Nesting</li>
+  <li class="task">Custom Services</li>
+</ul>
+
 
 <h2>Contexts</h2>
 
