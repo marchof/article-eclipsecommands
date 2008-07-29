@@ -428,12 +428,25 @@
     "org.eclipse.ui.<b>popup.any</b>"</li>
 </ul>
 
-
+<p>
+  An important simplification that comes with the new command framework is the
+  way how menus and tool bars can be populated. Now we have a single extension
+  mechanism to contribute action items as well as other widgets to all possible
+  locations within the workbench window. The following screen shows many
+  examples where items can be placed:
+</p>
 
 <img src="images/menucontributions.png" alt="Menu Contributions" width="623" height="512" class="figure"/>
 <div class="caption">
   <strong>Figure xxx</strong>: Possible menu contributions to the Eclipse workbench
 </div>
+
+<p>
+  With the new contribution framework the extension point org.eclipse.ui.menus
+  is the only mechanism you need to know to populate tool bars and menus of the
+  RCP workbench. 
+</p>
+
 
 
 <h2>Key Bindings</h2>
@@ -558,7 +571,7 @@
 <h2>References</h2>
 
 <ul>
-  <li>Douglas Pollock (2005). Improve Action Contributions <i>Request for Comments at dev.eclipse.org</i><br/>
+  <li>Douglas Pollock (2005). Improve Action Contributions. <i>Request for Comments at dev.eclipse.org</i><br/>
     <a href="http://dev.eclipse.org/viewcvs/index.cgi/platform-ui-home/R3_1/contributions-proposal/requestForComments.html?revision=1.3">http://dev.eclipse.org/viewcvs/index.cgi/platform-ui-home/R3_1/contributions-proposal/requestForComments.html?revision=1.3</a></li>
   <li>Paul Webster et al (2007). Platform Command Framwork. <i>wiki.eclipse.org</i><br/> 
     <a href="http://wiki.eclipse.org/Platform_Command_Framework">http://wiki.eclipse.org/Platform_Command_Framework</a></li>
@@ -572,6 +585,8 @@
     <a href="http://help.eclipse.org/help33/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/workbench_cmd.htm">http://help.eclipse.org/help33/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/workbench_cmd.htm</a></li>
   <li>Tonny Madsen (2007). Working with the menus extension point. <i>blog.rcp-company.com</i><br/>
     <a href="http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html">http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html</a></li>
+  <li>Karsten Voigt (2008). Configuring and adding menu items in Eclipse V3.3. <i>IBM developerWorks</i><br/>
+    <a href="http://www.ibm.com/developerworks/library/os-eclipse-3.3menu/index.html">http://www.ibm.com/developerworks/library/os-eclipse-3.3menu/index.html</a></li>
 </ul>
 
 <h2>Feedback</h2>
