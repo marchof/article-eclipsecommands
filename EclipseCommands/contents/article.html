@@ -143,17 +143,44 @@
   extension points.
 </p>
 
-
 <h3>Moving to a new Architecture</h3>
 
-<ul>
-  <li class="task">RFC published in 2005</li>
-  <li class="task">While the command framework is a clean and powerful solution
-    to the issues stated above it came into picture quite late and is also by
-    the Eclipse project itself not yet fully adopted.</li>
-</ul>
+<p>
+  The deficiencies with the original action framework were well identified long
+  time ago. In 2003  
+  <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=36968">bug #36968</a> 
+  (<i>"Improve action contributions"</i>) has been opened stating that <i>"the
+  current action contribution story is diverse and complex, and the interactions
+  between key bindings and retargetable actions, unclear"</i>. This bug has a
+  reference to a even older issue filed at times when Eclipse bugzilla entries
+  had four digit ids only:
+  <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=1989">Bug #1989</a> 
+  from 2001 is about controlling visibility of menu items.
+</p>
 
+<p>
+  In 2005 a
+  <a href="http://dev.eclipse.org/viewcvs/index.cgi/platform-ui-home/R3_1/contributions-proposal/requestForComments.html?revision=1.3#SWTRenderer">Request
+  for Comments by Douglas Pollock</a> identifies &mdash; among a long list of 
+  other important requirements &mdash; the main properties a new action
+  framework should come with:
+</p>
 
+<ol>
+  <li><b>Unified concept for contributions to the workbench</b></li>
+  <li><b>Clear separation between behavior and presentation in the user interface</b></li>
+</ol>
+
+<p>
+  The same RFC proposes a framework centered around so called <i>commands</i>,
+  which was adopted in several steps. While the resulting <i>command
+  framework</i> is a clean and powerful solution it took some time to integrate
+  all aspects into the Eclipse workbench. Starting with Eclipse 3.3 it became
+  possible to rely on the new framework for most action contributions. Eclipse
+  3.4 opened the framework itself for custom extensions. And happily the 
+  <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=1989">4-digit bug</a>
+  could finally set to <i>resolved</i> in 2007.
+</p>
 
 <h3>The Command Framework</h3>
 
@@ -230,7 +257,7 @@
   <a href="#commands_predefined">below</a>. 
 </p>
 
-<h3>Defining Commands at Programmatically</h3>
+<h3>Defining Commands Programmatically</h3>
 
 <p>
   In special situations you might also use the command service API to define
