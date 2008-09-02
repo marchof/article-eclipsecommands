@@ -40,7 +40,7 @@
   </p>
 <div class="author">Draft by Marc R. Hoffmann, Mountainminds GmbH &amp; Co. KG</div>
 <div class="copyright">Copyright &copy; 2008 Mountainminds GmbH &amp; Co. KG</div>
-<div class="date">DRAFT - June, 2008</div>
+<div class="date">DRAFT - September, 2008</div>
 </div>
 
 <div class="content">
@@ -185,22 +185,17 @@
 <h3>The Command Framework</h3>
 
 <ul>
-  <li class="task">Highlevel overview defining the core terms along with there
-    basic concepts</li>
-  <li class="task">A chart "triggers - commands - handlers" depicts the core
-    players of the framework.  For each subsequent section a hilighted thumbnail
-    version of the same chart could depict the focus of the respective section.</li>
   <li class="task">Involved Services</li>
+  <li class="task">Structure of the article with links</li>
 </ul>
 
-<p class="task"> 
- Use cases:
- 
- - Place the same Action at different places e.g. Window Menu and Toolbar
- - Have a different implementation for e.g. the "Copy" Command from the
- "Edit" menu depending on the current context
-
- Solution: Decouple UI-Binding and implementation through so called Commands.
+<p>
+  The essential idea of the new approach for user interface contributions is an
+  abstraction layer between the UI presentation and the behavior implementation.
+  This abstraction manifests in so called <i>commands</i>. A command is neither
+  the presentation nor a particular behavior implementation; it is an abstract
+  representation of some semantical behavior. This diagram shows how the
+  command sits between the UI presentation and different behavior implementations:
 </p>
 
 <img class="figure" src="images/diagram_command.png" width="410" height="150" alt="Command"/>
@@ -208,13 +203,33 @@
   <strong>Figure xxx</strong>: The Command Abstraction
 </div>
 
+<p>
+  A good example for this concept is the <i>copy to clipboard</i> command found
+  in nearly every desktop application. On the presentation side we may have a
+  menu item for it in the <i>Edit</i> window menu, a tool bar button,
+  occurrences in several context menus and the user will expect a short key like
+  <code>CTRL+C</code>. On the other side we will need very different handler
+  implementations for the copy command depending on the context: A file
+  navigator will put the currently selected file references to the clip board,
+  a text editor pieces of formatted text and an image viewer might deliver 
+  bitmap data to the clipboard. Other examples where the advantage of an
+  abstraction becomes obvious are commands like <i>delete</i>, <i>refresh</i> or
+  <i>select all</i>.
+</p>
+  
+<p>
+  The command framework provides powerful and consistent contribution mechanisms
+  for the presentation side as well as for handler implementations. Therefore
+  every user action in new Eclipse applications should be implemented based on
+  commands. 
+</p>
+
 <h2>Commands</h2>
 
 <ul>
   <li class="task">Purpose and properties</li>
-  <li class="task">Declaring commands via API (why?)</li>
   <li class="task">APIs Querying Commands</li>
-  <li class="task">Parametrized commands</li>
+  <li class="task">Parameterized commands</li>
   <li class="task">Command icons</li>
 </ul>
 
@@ -618,6 +633,8 @@
     <a href="http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html">http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html</a></li>
   <li>Karsten Voigt (2008). Configuring and adding menu items in Eclipse V3.3. <i>IBM developerWorks</i><br/>
     <a href="http://www.ibm.com/developerworks/library/os-eclipse-3.3menu/index.html">http://www.ibm.com/developerworks/library/os-eclipse-3.3menu/index.html</a></li>
+  <li>Paul Webster (2008). Using Commands and Menu Contributions. <i>Tutorial at EclipseCon 2008</i><br/>    
+    <a href="http://www.eclipsecon.org/2008/?page=sub/&amp;id=221">http://www.eclipsecon.org/2008/?page=sub/&amp;id=221</a></li>
 </ul>
 
 <h2>Feedback</h2>
