@@ -51,7 +51,7 @@
   <li class="task">TODO</li>
 </ul>
 
-<h2>Introduction</h2>
+<h2><a name="introduction"/>Introduction</h2>
 
 <p>
   The Eclipse command framework is the result of long-term effort to streamline
@@ -227,11 +227,41 @@
 <h2>Commands</h2>
 
 <ul>
-  <li class="task">Purpose and properties</li>
   <li class="task">APIs Querying Commands</li>
-  <li class="task">Parameterized commands</li>
   <li class="task">Command icons</li>
 </ul>
+
+<p>
+  As described in the <a href="#introduction">introduction</a> commands are a
+  abstract representation representation of some semantical behavior only. For
+  this purpose a command declaration comes with just a few properties:
+</p>
+
+<ul>
+  <li><b>Unique Identifier:</b> A unique identifier allows references to the
+    command.</li>
+  <li><b>Name:</b> A display name for the user which also serves as the default
+    label for associated menu items and default tool tip for tool bar buttons
+    derived from this command.</li>
+  <li><b>Description:</b> User readable description of the command.</li>
+  <li><b>Category Id:</b> Commands are organized in categories, therefore every
+  command should be assigned to one. The primary purpose is to help the user
+  navigating the commands e.g. when creating custom <a href="#keybindings">key
+  bindings</a>.</li>
+  <li><b>Help Context Id:</b> To interlink directly with the Eclipse 
+  <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/guide/ua_help.htm">help system</a>
+  commands might declare a help context id.</li>
+</ul>
+
+<p>
+  While there is a optional default <a href="#handlers">handler</a> property, the
+  command is not required to have a reference to a particular implementation of
+  its behavior.
+
+  Commands may also declare parameters which can be passed at execution time.
+  See section <a href="#commands_parameters">Parameterized Commands</a> below 
+  for details.
+</p>
 
 <h3>Declaring Commands</h3>
 
@@ -267,6 +297,10 @@
   the command. See the online documentation for a complete reference of the
   optional attributes of the extension point 
   <code><a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/reference/extension-points/org_eclipse_ui_commands.html">org.eclipse.ui.commands</a></code>.
+  As the command framework has been refined over the time this extension point
+  carries several deprecated elements and attributes. If you follow the patterns
+  described in this article there is no need to rely on any of the deprecated
+  declaration mechanisms. 
 </p>
 
 <p>
@@ -448,6 +482,12 @@
   <strong>Figure xxx</strong>: Commands defined in plug-in <code>org.eclipse.ui</code>
 </div>
 
+<h3><a name="commands_parameters"/>Parameterized Commands</h3>
+
+<ul>
+  <li class="task">TODO</li>
+</ul>
+
 
 <h2>Menu Contributions</h2>
 
@@ -461,6 +501,7 @@
   <li class="task">Dynamic contributions, examples: history, customazible 
     favourites, domain specific items (e.g. related Java types, calendar dates).</li>
   <li class="task">Creating custom controls in toolbars.</li>
+  <li class="task">Image+Text Toolbars</li>
   <li class="task">Writing extensible plugins</li>
   <li class="task">In case you're project is an add-on to another product (e.g.
     the Eclipse IDE) try to be un-obtrusive and avoid prominent placement of
@@ -495,15 +536,16 @@
 
 
 
-<h2>Key Bindings</h2>
+<h2><a name="keybindings"/>Key Bindings</h2>
 
-<h2>Handlers</h2>
+<h2><a name="handlers"/>Handlers</h2>
 
 <ul>
   <li class="task">Purpose and properties</li>
   <li class="task">Default handler, specific/local handers</li>
   <li class="task">Nested IHandlerService implementations, scope of handlers</li>
-  <li class="task">Declaring handlers via extension point</li>
+  <li class="task">Declaring handlers via extension point (for enablement check
+    only instantiated, when the bundle is activated</li>
   <li class="task">Declaring handlers via API</li>
   <li class="task">Handler lifecycle</li>
   <li class="task">UI element updates</li>
@@ -536,6 +578,8 @@
   <li><b><code>org.eclipse.ui.propertyPages</code>:</b> </li>
   <li><b><code>org.eclipse.ui.viewActions</code>:</b> </li>
 </ul>
+
+<h4>Example: ActionSet is active</h4>
 
 <h4>Example: One ore more elements selected</h4>
 
@@ -627,8 +671,8 @@
     <a href="http://wiki.eclipse.org/Menu_Contributions">http://wiki.eclipse.org/Menu_Contributions</a></li>
   <li>Paul Webster (2007). Menu Extension Mapping. <i>wiki.eclipse.org</i><br/> 
     <a href="http://wiki.eclipse.org/Menus_Extension_Mapping">http://wiki.eclipse.org/Menus_Extension_Mapping</a></li>
-  <li>Basic workbench extension points using commands. <i>Eclipse 3.3 Online Help</i><br/>
-    <a href="http://help.eclipse.org/help33/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/workbench_cmd.htm">http://help.eclipse.org/help33/index.jsp?topic=/org.eclipse.platform.doc.isv/guide/workbench_cmd.htm</a></li>
+  <li>Basic workbench extension points using commands. <i>Eclipse 3.4 Online Help</i><br/>
+    <a href="http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/guide/workbench_cmd.htm">http://help.eclipse.org/ganymede/topic/org.eclipse.platform.doc.isv/guide/workbench_cmd.htm</a></li>
   <li>Tonny Madsen (2007). Working with the menus extension point. <i>blog.rcp-company.com</i><br/>
     <a href="http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html">http://blog.rcp-company.com/2007/06/working-with-menus-extension-point.html</a></li>
   <li>Karsten Voigt (2008). Configuring and adding menu items in Eclipse V3.3. <i>IBM developerWorks</i><br/>
